@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>CyberShield | Incident Command</title>
+    <meta name="description" content="CyberShield — Cybersecurity Incident Management System (DSA project). Runs the Streamlit app in the browser with stlite." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@1.12.1/build/stlite.css" />
+    <style>
+      html, body { margin: 0; background: #0b1220; color: #e5edf8; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@1.12.1/build/stlite.js";
+
+      // The same Python files used by `streamlit run app.py` are fetched and run in the browser (Pyodide).
+      mount(
+        {
+          entrypoint: "app.py",
+          requirements: [],
+          files: {
+            "app.py": { url: "./app.py" },
+            "cybershield/__init__.py": { url: "./cybershield/__init__.py" },
+            "cybershield/dsa.py": { url: "./cybershield/dsa.py" },
+            "cybershield/manager.py": { url: "./cybershield/manager.py" },
+          },
+          // Keep incidents saved in this browser (IndexedDB) between visits.
+          idbfsMountpoints: ["/home/pyodide/data"],
+          streamlitConfig: {
+            "theme.base": "dark",
+            "client.toolbarMode": "viewer",
+          },
+        },
+        document.getElementById("root"),
+      );
+    </script>
+  </body>
+</html>
